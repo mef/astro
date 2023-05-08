@@ -1,4 +1,34 @@
 ---
+/*********************************
+* 
+* Build list of all pages
+* 
+**********************************/
+
+	let allPages = []
+	
+	// static pages
+	const staticPages = await Astro.glob('./**/*.astro')
+	
+	staticPages.forEach(page => allPages.push({
+		url: page.url
+		, title: page.metadata.title
+		, description: page.metadata.description
+		, image: page.metadata.image
+	}))
+
+	
+/*********************************
+* 
+* Define page metadata
+* 
+**********************************/
+	export const metadata = {
+		title: 'Home page'
+		, description: 'example'
+		, datePublished: '2023-05-08'
+	}
+
 ---
 
 <html lang="en">
@@ -7,9 +37,15 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>{metadata.title}</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>{metadata.title}</h1>
+		
+		<ul>
+			{allPages.map((page) => (
+				<li><a href={page.url}>{page.title}</a> - {page.description}</li>
+			))}
+		</ul>
 	</body>
 </html>
